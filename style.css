@@ -15,4 +15,14 @@ body {
 #game-container {
     border-style: solid;
     border-color: black;
+    width: 900px;
+    height: 500px;
+    background-color: peachpuff;
+}
+#baker {
+    display: none;
+}
+
+#baker-2 {
+    display: none;
 }
