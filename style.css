@@ -19,10 +19,11 @@ body {
     height: 500px;
     background-color: peachpuff;
 }
+
 #baker {
     display: none;
 }
 
-#baker-2 {
+#cake {
     display: none;
 }
