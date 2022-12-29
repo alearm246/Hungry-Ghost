@@ -1,26 +1,17 @@
 import InputHandler from "../gameState/InputHandler.js";
+import GameObject from "./GameObject.js";
 
-class Player {
+class Player extends GameObject{
     constructor(scene) {
-        this.scene = scene;
-        this.width = 91;
-        this.height = 91;
-        this.x = 0;
-        this.y = this.scene.height - this.height;
+        super(scene, 0, 91, 91, 1, document.getElementById("baker"));
         this.vx = 0;
         this.vxMax = 3;
         this.vy = 0;
-        this.weight = 1;
-        this.image = document.getElementById("baker-2");
     }
 
-    update(input) {
+    update(input, cake) {
         //check horizontal scene boundaries
-        if(this.x >= this.scene.width - this.width) {
-            this.x = this.scene.width - this.width;
-        } else if(this.x <= -20) {
-            this.x = -20;
-        }
+        super.checkHorizontalBoundary();
 
         //horizontal movement
         this.x += this.vx;
@@ -33,31 +24,29 @@ class Player {
         }
 
         //handle vertical scene boundaries
-        if(this.y >= this.scene.height - this.height) {
-            this.y = this.scene.height - this.height;
-        }
+        super.checkVerticalBoundary();
 
         //handle jump
-        if(input.keys.includes(" ") && this.onGround()) {
-            this.vy -= 20;
+        if(input.keys.includes(" ") && this.onGround(cake)) {
+            this.vy -= 30;
         } 
         this.y += this.vy;
-        if(!this.onGround() && input.keys.includes("s")) {
+        if(!super.onGround(cake) && input.keys.includes("s")) {
             this.vy += 5;
-        } else if(!this.onGround()) {
+        } else if(!super.onGround(cake)) {
             this.vy += this.weight;
         }
-        if(this.onGround()) {
+        if(super.onGround(cake)) {
             this.vy = 0;
         }
     } 
     
-    draw(ctx) {
+    draw(ctx, enableHitBox) {
+        if(enableHitBox) {
+            ctx.fillStyle = "red";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
         ctx.drawImage(this.image, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height);
-    }
-
-    onGround() {
-        return this.y >= this.scene.height - this.height;
     }
 }
 
