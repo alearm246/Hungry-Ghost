@@ -1,7 +1,8 @@
 const states = {
     idle: 0,
     moving: 1,
-    launched: 2
+    launchRight: 2,
+    launchLeft: 3
 }
 
 export default states;

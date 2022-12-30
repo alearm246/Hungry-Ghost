@@ -4,9 +4,14 @@ class Idle {
     constructor(cake) {
         this.cake = cake;
         this.triggerTransition = false;
-        document.addEventListener("cakeLaunched", () => {
-            this.cake.stateMachine.setState(states.launched)
+        document.addEventListener("cakeLaunchLeft", () => {
+            console.log("LEFT SMASH");
+            this.cake.stateMachine.setState(states.launchLeft)
         });
+        document.addEventListener("cakeLaunchRight", () => {
+            console.log("RIGHT SMASH");
+            this.cake.stateMachine.setState(states.launchRight);
+        })
     }
 
     dispatch() {
