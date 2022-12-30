@@ -1,8 +1,9 @@
 import states from "./states.js";
 
 class Jumping {
-    constructor(player) {
+    constructor(player, cake) {
         this.player = player;
+        this.cake = cake;
     }
 
     dispatch() {

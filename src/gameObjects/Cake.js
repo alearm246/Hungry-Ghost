@@ -1,6 +1,7 @@
 import GameObject from "./GameObject.js";
 import StateMachine from "../gameState/StateMachine.js";
-import Launched from "../gameState/cake/launched.js";
+import LaunchRight from "../gameState/cake/LaunchRight.js";
+import LaunchLeft from "../gameState/cake/LaunchLeft.js";
 import Moving from "../gameState/cake/moving.js";
 import Idle from "../gameState/cake/Idle.js";
 
@@ -10,7 +11,12 @@ class Cake extends GameObject{
         this.vy = 0;
         this.vx = 0;
         this.idle = new Idle(this);
-        this.stateMachine = new StateMachine(this, [new Idle(this), new Moving(this), new Launched(this)], this.idle);
+        this.stateMachine = new StateMachine(this, [
+            new Idle(this), 
+            new Moving(this), 
+            new LaunchRight(this), 
+            new LaunchLeft(this)
+        ], this.idle);
         this.stateMachine.dispatch();
     }
 
