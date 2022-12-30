@@ -7,19 +7,20 @@ class PlayScene {
         this.width = width;
         this.height = height;
         this.input = new InputHandler();
-        this.player = new Player(this);
         this.cake = new Cake(this);
+        this.player = new Player(this);
     }
 
     update() {
         this.player.update(this.input, this.cake);
         this.cake.update(this.input);
         this.player.collisionDisplacement(this.cake);
+        //console.log("distance: ", this.player.getDistance(this.cake));
     } 
 
     draw(ctx) {
-        this.player.draw(ctx, false);
-        this.cake.draw(ctx, false);
+        this.player.draw(ctx, true);
+        this.cake.draw(ctx, true);
     }
 }
 

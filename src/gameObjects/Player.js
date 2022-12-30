@@ -1,5 +1,11 @@
 import InputHandler from "../gameState/InputHandler.js";
 import GameObject from "./GameObject.js";
+import StateMachine from "../gameState/StateMachine.js";
+import states from "../gameState/player/states.js";
+import Walking from "../gameState/player/Walking.js";
+import Idle from "../gameState/player/Idle.js";
+import Jumping from "../gameState/player/Jumping.js";
+import Smashing from "../gameState/player/Smashing.js";
 
 class Player extends GameObject{
     constructor(scene) {
@@ -7,12 +13,17 @@ class Player extends GameObject{
         this.vx = 0;
         this.vxMax = 3;
         this.vy = 0;
+        this.frameCounter = 0;
+        this.idle = new Idle(this);
+        this.stateMachine = new StateMachine(this, [this.idle, new Jumping(this, this.scene.cake), new Smashing(this, this.scene.cake)], this.idle);
+        this.stateMachine.dispatch();
     }
 
-    update(input, cake) {
+    update(input) {
+        this.frameCounter++;
         //check horizontal scene boundaries
         super.checkHorizontalBoundary();
-
+        this.stateMachine.currentState.transition(input);
         //horizontal movement
         this.x += this.vx;
         if(input.keys.includes("d")) {
@@ -27,19 +38,15 @@ class Player extends GameObject{
         super.checkVerticalBoundary();
 
         //handle jump
-        if(input.keys.includes(" ") && this.onGround(cake)) {
-            this.vy -= 30;
-        } 
-        this.y += this.vy;
-        if(!super.onGround(cake) && input.keys.includes("s")) {
-            this.vy += 5;
-        } else if(!super.onGround(cake)) {
+        if(!this.isOnGroundOrOnTop()) {
             this.vy += this.weight;
         }
-        if(super.onGround(cake)) {
-            this.vy = 0;
-        }
+        this.y += this.vy;
     } 
+
+    setState(state) {
+        this.currentState = this.states[state];
+    }
     
     draw(ctx, enableHitBox) {
         if(enableHitBox) {

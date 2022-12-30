@@ -24,7 +24,7 @@ class GameObject {
         (topSide <= otherGameObjectBottomSide));
     }
 
-    collisionDisplacement(otherGameObject) {
+    collisionDisplacement(otherGameObject, callback=null) {
         if((this.isCollidingWith(otherGameObject) && this.getDirection(otherGameObject) === "left")) {
             let lastGameObjectXPos = otherGameObject.x;
             otherGameObject.x++;
@@ -35,6 +35,9 @@ class GameObject {
             this.x = lastGameObjectXPos;
         } else if(this.isCollidingWith(otherGameObject) && this.getDirection(otherGameObject) === "above") {
             this.y = otherGameObject.y - this.height;
+        }
+        if(callback) {
+            callback();
         }
     }
 
@@ -61,6 +64,14 @@ class GameObject {
         }
     }
 
+    getDistance(otherGameObject) {
+        return Math.sqrt((Math.pow((this.x - otherGameObject.x), 2)) + (Math.pow((this.y - otherGameObject.y), 2)));
+    }
+
+    getHorizontalDistance(otherGameObject) {
+        return this.x - otherGameObject.x;
+    }
+
     checkHorizontalBoundary() {
         if(this.x >= this.scene.width - this.width) {
             this.x = this.scene.width - this.width;
@@ -73,14 +84,23 @@ class GameObject {
         if(this.y >= this.scene.height - this.height) {
             this.y = this.scene.height - this.height;
         }
-    }   
+    }
 
-    onGround(otherGameObject=null) {
-        if(otherGameObject) {
-            return this.y >= this.scene.height - this.height || (this.getDirection(otherGameObject) === "above" && this.isCollidingWith(otherGameObject));
-        } else {
-            return this.y >= this.scene.height - this.height
-        }
+    turOnWorldBoarders(turnOn) {
+        this.checkHorizontalBoundary();
+        this.checkVerticalBoundary();
+    }
+
+    isOnGroundOrOnTop() {
+        return this.onGround() || this.onTopOfGameObject();
+    }
+
+    onGround() {   
+        return this.y >= this.scene.height - this.height  
+    }
+
+    onTopOfGameObject() {
+        return this.getDirection(this.scene.cake) === "above" && this.isCollidingWith(this.scene.cake);
     }
 }
 
