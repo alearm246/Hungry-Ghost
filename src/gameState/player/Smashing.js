@@ -9,14 +9,14 @@ class Smashing {
 
     dispatch() {
         this.player.vy += 15;
+        //console.log("SMASH");
         if(this.player.getDirection(this.cake) === "left") {
             const event = new Event("cakeLaunchRight");
             document.dispatchEvent(event);
         } else if(this.player.getDirection(this.cake) === "right") {
             const event = new Event("cakeLaunchLeft");
             document.dispatchEvent(event);
-        }
-       
+        }  
     }
 
     transition(input) {

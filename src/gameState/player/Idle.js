@@ -8,6 +8,7 @@ class Idle {
     dispatch() {
         this.player.vx = 0;
         this.player.vy = 0;
+       // console.log("IDLE");
     }
 
     transition(input) {

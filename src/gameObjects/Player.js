@@ -8,8 +8,9 @@ import Jumping from "../gameState/player/Jumping.js";
 import Smashing from "../gameState/player/Smashing.js";
 
 class Player extends GameObject{
-    constructor(scene) {
-        super(scene, 0, 91, 91, 1, document.getElementById("baker"));
+    constructor(scene, x, y) {
+        super(scene, x, y, 91, 91, 1, document.getElementById("baker"));
+        this.y = this.scene.height - this.height;
         this.vx = 0;
         this.vxMax = 3;
         this.vy = 0;

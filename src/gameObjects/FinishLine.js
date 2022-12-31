@@ -1,9 +1,11 @@
 import GameObject from "./GameObject.js";
 
 class FinishLine extends GameObject {
-    constructor(scene, x) {
-        super(scene, x, 91, 91, 1, document.getElementById("finish-line"));
+    constructor(scene, x, y) {
+        super(scene, x, y, 91, 91, 1, document.getElementById("finish-line"));
         this.x = this.scene.width - this.width;
+        this.y = this.scene.height - this.height;
+        this.blocked = true;
     }
 
     update(input) {
