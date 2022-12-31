@@ -31,3 +31,15 @@ body {
 #finish-line {
     display: none;
 }
+
+#win-scene {
+    display: none;
+}
+
+#trap {
+    display: none;
+}
+
+#losing-scene {
+    display: none;
+}

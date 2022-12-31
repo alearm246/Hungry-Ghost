@@ -1,8 +1,9 @@
 import states from "./states.js";
 
 class LaunchRight {
-    constructor(cake) {
+    constructor(cake, trap) {
         this.cake = cake;
+        this.trap = trap;
     }
 
     dispatch() {
@@ -16,6 +17,9 @@ class LaunchRight {
                 this.cake.stateMachine.setState(states.idle);
             }
         }, 300);
+        this.cake.stationaryCollision(this.trap, () => {
+            this.cake.stateMachine.setState(states.damaged);
+        });
     }
 }
 

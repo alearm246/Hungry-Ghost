@@ -1,10 +1,10 @@
 class GameObject {
-    constructor(scene, x, width, height, weight, image) {
+    constructor(scene, x, y, width, height, weight, image) {
         this.scene = scene;
         this.width = width;
         this.height = height;
         this.x = x;
-        this.y = this.scene.height - this.height;
+        this.y = y;
         this.weight = weight;
         this.image = image;
     }
@@ -24,21 +24,43 @@ class GameObject {
         (topSide <= otherGameObjectBottomSide));
     }
 
-    collisionDisplacement(otherGameObject, callback=null) {
+    stationaryCollision(otherGameObject, callback=null) {
+        let isColliding = false;
         if((this.isCollidingWith(otherGameObject) && this.getDirection(otherGameObject) === "left")) {
+            isColliding = true
+            this.x = otherGameObject.x - this.width;
+        } else if(this.isCollidingWith(otherGameObject) && this.getDirection(otherGameObject) === "right") {
+            isColliding = true
+            this.x = otherGameObject.x + otherGameObject.width;;
+        } else if(this.isCollidingWith(otherGameObject) && this.getDirection(otherGameObject) === "above") {
+            isColliding = true
+            this.y = otherGameObject.y - this.height;
+        }
+        if(isColliding && callback) {
+            callback();
+        }
+    }
+
+    collisionDisplacement(otherGameObject, callback=null) {
+        let isColliding = false;
+        if((this.isCollidingWith(otherGameObject) && this.getDirection(otherGameObject) === "left")) {
+            isColliding = true
             let lastGameObjectXPos = otherGameObject.x;
             otherGameObject.x++;
             this.x = lastGameObjectXPos - this.width;
         } else if(this.isCollidingWith(otherGameObject) && this.getDirection(otherGameObject) === "right") {
+            isColliding = true
             let lastGameObjectXPos = otherGameObject.x + otherGameObject.width;
             otherGameObject.x--;
             this.x = lastGameObjectXPos;
         } else if(this.isCollidingWith(otherGameObject) && this.getDirection(otherGameObject) === "above") {
+            isColliding = true
             this.y = otherGameObject.y - this.height;
         }
-        if(callback) {
+        if(isColliding && callback) {
             callback();
         }
+
     }
 
     getDirection(otherGameObject) {
@@ -100,7 +122,9 @@ class GameObject {
     }
 
     onTopOfGameObject() {
-        return this.getDirection(this.scene.cake) === "above" && this.isCollidingWith(this.scene.cake);
+        return (this.getDirection(this.scene.cake) === "above" && this.isCollidingWith(this.scene.cake)) ||
+               (this.getDirection(this.scene.finishLine) === "above" && this.isCollidingWith(this.scene.finishLine)) ||
+               (this.getDirection(this.scene.trap) === "above" && this.isCollidingWith(this.scene.trap));
     }
 }
 
